@@ -2,42 +2,82 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>シンプルおみくじ</title>
+    <title>詳細おみくじ</title>
     <style>
-        body { font-family: sans-serif; text-align: center; padding-top: 50px; background-color: #f4f4f4; }
-        .card { background: white; width: 300px; margin: 0 auto; padding: 20px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        h1 { color: #d32f2f; }
-        #result { font-size: 2rem; font-weight: bold; margin: 20px 0; color: #333; }
-        button { background: #d32f2f; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 1rem; }
-        button:hover { background: #b71c1c; }
+        body { font-family: "Helvetica Neue", Arial, sans-serif; text-align: center; background-color: #fce4ec; padding: 20px; }
+        .omikuji-box { background: white; max-width: 400px; margin: 0 auto; padding: 30px; border: 5px double #d32f2f; border-radius: 10px; }
+        h1 { color: #d32f2f; margin-bottom: 5px; }
+        .luck { font-size: 3rem; font-weight: bold; color: #d32f2f; margin: 20px 0; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .details { text-align: left; background: #fff9f9; padding: 15px; border-radius: 8px; line-height: 1.8; }
+        .item-label { font-weight: bold; color: #b71c1c; margin-right: 10px; }
+        button { background: #d32f2f; color: white; border: none; padding: 12px 25px; border-radius: 25px; cursor: pointer; font-size: 1.1rem; margin-top: 20px; transition: 0.3s; }
+        button:hover { background: #ff5252; transform: scale(1.05); }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <h1>今日のおみくじ</h1>
-        <div id="result">？</div>
-        <button onclick="drawOmikuji()">運勢を占う</button>
+    <div class="omikuji-box">
+        <h1>御神籤</h1>
+        <p>〜 今日のあなたの運勢 〜</p>
+        
+        <div id="display-area" style="display: none;">
+            <div class="luck" id="luck-result"></div>
+            <div class="details">
+                <div><span class="item-label">【願望】</span><span id="wish"></span></div>
+                <div><span class="item-label">【待人】</span><span id="waiter"></span></div>
+                <div><span class="item-label">【失物】</span><span id="lost"></span></div>
+                <div><span class="item-label">【学問】</span><span id="study"></span></div>
+            </div>
+        </div>
+
+        <button onclick="drawOmikuji()">おみくじを引く</button>
     </div>
 
     <script>
-        function drawOmikuji() {
-            // おみくじの結果リスト
-            const results = ["大吉", "中吉", "小吉", "吉", "末吉", "凶"];
-            
-            // ランダムに選ぶ処理
-            const randomIndex = Math.floor(Math.random() * results.length);
-            const finalResult = results[randomIndex];
-
-            // 画面に表示する
-            document.getElementById("result").innerText = finalResult;
-
-            // ちょっとした演出（大吉のときだけ色を変えるなど）
-            if (finalResult === "大吉") {
-                document.getElementById("result").style.color = "#ff9800";
-            } else {
-                document.getElementById("result").style.color = "#333";
+        const omikujiData = [
+            {
+                luck: "大吉",
+                wish: "思うがままに叶うでしょう。謙虚さを忘れずに。",
+                waiter: "遅れますが必ず来ます。",
+                lost: "高いところから見つかります。",
+                study: "安心して励めば良い結果が出ます。"
+            },
+            {
+                luck: "中吉",
+                wish: "急がなければ叶います。周囲に相談しましょう。",
+                waiter: "来るでしょう。便りがあります。",
+                lost: "身近なところにあります。",
+                study: "努力を怠らなければ大丈夫です。"
+            },
+            {
+                luck: "小吉",
+                wish: "半分ほど叶います。粘り強さが鍵です。",
+                waiter: "期待せず待つのが吉。",
+                lost: "出にくいですが、諦めないこと。",
+                study: "基礎を固める時期です。"
+            },
+            {
+                luck: "凶",
+                wish: "今は耐える時。無理な行動は控えましょう。",
+                waiter: "現れません。自分から動きましょう。",
+                lost: "見つかりにくいでしょう。",
+                study: "一からのやり直しが必要です。"
             }
+        ];
+
+        function drawOmikuji() {
+            // ランダムに1つ選ぶ
+            const result = omikujiData[Math.floor(Math.random() * omikujiData.length)];
+
+            // 画面に反映
+            document.getElementById("luck-result").innerText = result.luck;
+            document.getElementById("wish").innerText = result.wish;
+            document.getElementById("waiter").innerText = result.waiter;
+            document.getElementById("lost").innerText = result.lost;
+            document.getElementById("study").innerText = result.study;
+
+            // 表示エリアを出す
+            document.getElementById("display-area").style.display = "block";
         }
     </script>
 
